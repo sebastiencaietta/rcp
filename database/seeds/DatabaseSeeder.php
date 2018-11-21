@@ -11,6 +11,31 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call('UsersTableSeeder');
+        $tags = [
+            'Facile',
+            'Long',
+            'Healthy',
+            'Party',
+            'Gluten free',
+            'Gluten full',
+            'Boissons',
+            'Paleo',
+        ];
+
+        $units = [
+            'kg',
+            'g',
+            'teaspoon',
+            'tablespoon',
+            'cup',
+            'L',
+            'ml'
+        ];
+
+        $categories = [
+            'Entrées' => 'entrees',
+            'Plats Principaux' => 'plats-principaux',
+            'Desserts' => 'desserts',
+        ];
     }
 }
