@@ -31,4 +31,35 @@ class RecipeController extends Controller
         }, 'tags', 'steps'])->where('slug', $slug)->first(['*']);
         return response()->json($recipe);
     }
+
+    public function update(Request $request, int $recipeId): JsonResponse
+    {
+        $this->validate(
+            $request,
+            [
+                'id' => 'exists:recipes,id',
+                'category_id' => 'exists:categories,id',
+                'title' => 'string',
+                'slug' => 'string',
+                'cooking_time' => 'int',
+                'preparation_time' => 'int',
+                'feeds' => 'int',
+                'link' => 'sometimes|string',
+                'picture' => 'sometimes|string',
+                'thumbnail' => 'sometimes|string',
+            ]
+        );
+
+        $recipeFields = $request->except(['id', 'steps', 'tags', 'ingredients']);
+
+        /** @var Recipe $recipe */
+        $recipe = Recipe::query()->where('id', $recipeId)->first();
+        $recipe->update($recipeFields);
+
+        $tagIds = collect($request->input('tags'))->pluck('id');
+        $recipe->tags()->sync($tagIds);
+
+
+        return response()->json($recipe->fresh('tags', 'steps'));
+    }
 }

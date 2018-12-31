@@ -45,6 +45,8 @@ class AddRecipesSchemas extends Migration
                 $table->string('link')->nullable();
                 $table->string('thumbnail')->nullable();
                 $table->string('picture')->nullable();
+                $table->timestamp('created_at')->useCurrent();
+                $table->timestamp('updated_at')->useCurrent();
 
                 $table->index('slug');
 
@@ -56,6 +58,8 @@ class AddRecipesSchemas extends Migration
                 $table->unsignedInteger('recipe_id');
                 $table->integer('step_number');
                 $table->text('description');
+                $table->timestamp('created_at')->useCurrent();
+                $table->timestamp('updated_at')->useCurrent();
 
                 $table->foreign('recipe_id')->references('id')->on('recipes')->onDelete('cascade');
             });

@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Recipe extends Model
 {
@@ -36,6 +35,20 @@ class Recipe extends Model
         'cooking_time' => 'int',
         'preparation_time' => 'int',
         'feeds' => 'int',
+    ];
+
+    protected $fillable = [
+        'category_id',
+        'title',
+        'slug',
+        'cooking_time',
+        'preparation_time',
+        'feeds',
+        'link',
+        'thumbnail',
+        'picture',
+        'created_at',
+        'updated_at',
     ];
 
     public function getTitle(): string

@@ -10,4 +10,5 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
     $router->get('recipes', ['uses' => 'RecipeController@fetchAll']);
     $router->get('recipes/{slug}', ['uses' => 'RecipeController@fetchOne']);
+    $router->put('recipes/{id}', ['uses' => 'RecipeController@update']);
 });

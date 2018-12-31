@@ -15,7 +15,6 @@ RUN pecl install xdebug-2.5.0 && \
 
 COPY .docker/xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
 
-
 ENV TERM xterm
 
 RUN a2enmod rewrite
