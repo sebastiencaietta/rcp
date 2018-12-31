@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Recipe extends Model
 {
@@ -23,8 +22,6 @@ class Recipe extends Model
 
     protected $tags;
 
-    protected $steps;
-
     protected $link;
 
     protected $thumbnail;
@@ -41,6 +38,7 @@ class Recipe extends Model
         'category_id',
         'title',
         'slug',
+        'description',
         'cooking_time',
         'preparation_time',
         'feeds',
@@ -104,11 +102,6 @@ class Recipe extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
-    }
-
-    public function steps(): HasMany
-    {
-        return $this->hasMany(RecipeStep::class);
     }
 
     public function getRouteKeyName(): string

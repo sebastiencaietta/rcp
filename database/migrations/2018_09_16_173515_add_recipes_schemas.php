@@ -39,6 +39,7 @@ class AddRecipesSchemas extends Migration
                 $table->unsignedInteger('category_id');
                 $table->string('title');
                 $table->string('slug');
+                $table->text('description');
                 $table->integer('cooking_time');
                 $table->integer('preparation_time');
                 $table->integer('feeds');
@@ -51,17 +52,6 @@ class AddRecipesSchemas extends Migration
                 $table->index('slug');
 
                 $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
-            });
-
-            Schema::create('recipe_steps', function (Blueprint $table) {
-                $table->increments('id');
-                $table->unsignedInteger('recipe_id');
-                $table->integer('step_number');
-                $table->text('description');
-                $table->timestamp('created_at')->useCurrent();
-                $table->timestamp('updated_at')->useCurrent();
-
-                $table->foreign('recipe_id')->references('id')->on('recipes')->onDelete('cascade');
             });
 
             Schema::create('ingredient_recipe', function (Blueprint $table) {
@@ -94,7 +84,6 @@ class AddRecipesSchemas extends Migration
         Schema::dropIfExists('tags');
         Schema::dropIfExists('categories');
         Schema::dropIfExists('recipes');
-        Schema::dropIfExists('recipe_steps');
         Schema::dropIfExists('ingredient_recipe');
         Schema::dropIfExists('recipe_tag');
     }

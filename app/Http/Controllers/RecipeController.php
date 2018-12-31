@@ -12,23 +12,34 @@ class RecipeController extends Controller
 {
     public function fetchAll(Request $request): JsonResponse
     {
-        $this->validate($request, [
-            'category_id' => 'sometimes|exists:categories,id',
-        ]);
+        $this->validate(
+            $request,
+            [
+                'category_id' => 'sometimes|exists:categories,id',
+            ]
+        );
 
         $categoryId = $request->get('category_id');
-        $recipes = Recipe::query()->when($categoryId, function (Builder $query) use ($categoryId) {
-            $query->where('category_id', $categoryId);
-        })->with(['tags', 'category'])->get();
+        $recipes = Recipe::query()->when(
+            $categoryId,
+            function (Builder $query) use ($categoryId) {
+                $query->where('category_id', $categoryId);
+            }
+        )->with(['tags', 'category'])->get();
 
         return response()->json($recipes);
     }
 
     public function fetchOne(string $slug): JsonResponse
     {
-        $recipe = Recipe::query()->with(['ingredients' => function(BelongsToMany $query) {
-            return $query->select(['*', 'quantity', 'unit_id']);
-        }, 'tags', 'steps'])->where('slug', $slug)->first(['*']);
+        $recipe = Recipe::query()->with(
+            [
+                'ingredients' => function (BelongsToMany $query) {
+                    return $query->select(['*', 'quantity', 'unit_id']);
+                },
+                'tags',
+            ]
+        )->where('slug', $slug)->first(['*']);
         return response()->json($recipe);
     }
 
@@ -44,13 +55,10 @@ class RecipeController extends Controller
                 'cooking_time' => 'int',
                 'preparation_time' => 'int',
                 'feeds' => 'int',
-                'link' => 'sometimes|string',
-                'picture' => 'sometimes|string',
-                'thumbnail' => 'sometimes|string',
             ]
         );
 
-        $recipeFields = $request->except(['id', 'steps', 'tags', 'ingredients']);
+        $recipeFields = $request->except(['id', 'tags', 'ingredients']);
 
         /** @var Recipe $recipe */
         $recipe = Recipe::query()->where('id', $recipeId)->first();
@@ -60,6 +68,6 @@ class RecipeController extends Controller
         $recipe->tags()->sync($tagIds);
 
 
-        return response()->json($recipe->fresh('tags', 'steps'));
+        return response()->json($recipe->fresh('tags', 'ingredients'));
     }
 }

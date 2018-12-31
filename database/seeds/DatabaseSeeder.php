@@ -19,10 +19,8 @@ class DatabaseSeeder extends Seeder
         $this->insertCategories();
         $this->insertUnits();
         $this->insertIngredients();
-        $this->insertSteps();
         $this->insertRecipes();
         $this->attachTagsToRecipes();
-        $this->attachStepsToRecipes();
     }
 
     private function insertTags()
@@ -76,6 +74,11 @@ class DatabaseSeeder extends Seeder
                 'category_id' => $categories->get('plats-principaux')->id,
                 'title' => 'Couscous',
                 'slug' => 'couscous',
+                'description' => 'Faire cuire le poulet et le mouton
+
+Faire cuire la semoule sur le coté
+
+Tout mettre ensemble dans une assiette et deguster',
                 'cooking_time' => 120,
                 'preparation_time' => 30,
                 'feeds' => 6,
@@ -90,11 +93,6 @@ class DatabaseSeeder extends Seeder
 
     }
 
-    private function insertSteps()
-    {
-
-    }
-
     private function attachTagsToRecipes()
     {
         $tags = Tag::query()->from('tags')->get()->keyBy('title')->toBase();
@@ -103,11 +101,6 @@ class DatabaseSeeder extends Seeder
         /** @var Recipe $couscous */
         $couscous = $recipes->get('couscous');
         $couscous->tags()->sync($tags->only(['Long', 'Gluten full', 'Party'])->pluck('id'));
-    }
-
-    private function attachStepsToRecipes()
-    {
-
     }
 
     private function cleanup()
