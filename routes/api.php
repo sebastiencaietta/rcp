@@ -8,6 +8,8 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
     $router->get('tags', ['uses' => 'TagController@fetchAll']);
 
+    $router->get('units', ['uses' => 'UnitController@fetchAll']);
+
     $router->get('recipes', ['uses' => 'RecipeController@fetchAll']);
     $router->get('recipes/{slug}', ['uses' => 'RecipeController@fetchOne']);
     $router->put('recipes/{id}', ['uses' => 'RecipeController@update']);

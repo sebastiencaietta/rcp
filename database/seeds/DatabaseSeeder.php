@@ -1,7 +1,9 @@
 <?php
 
+use App\Models\Ingredient;
 use App\Models\Recipe;
 use App\Models\Tag;
+use App\Models\Unit;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -21,6 +23,7 @@ class DatabaseSeeder extends Seeder
         $this->insertIngredients();
         $this->insertRecipes();
         $this->attachTagsToRecipes();
+        $this->attachIngredientsToRecipes();
     }
 
     private function insertTags()
@@ -53,15 +56,16 @@ class DatabaseSeeder extends Seeder
 
     private function insertUnits()
     {
-        $units = [
-            'kg',
-            'g',
-            'teaspoon',
-            'tablespoon',
-            'cup',
-            'L',
-            'ml',
-        ];
+        DB::table('units')->insert([
+            ['title' => 'none'],
+            ['title' => 'kg'],
+            ['title' => 'g'],
+            ['title' => 'teaspoon'],
+            ['title' => 'tablespoon'],
+            ['title' => 'cup'],
+            ['title' => 'L'],
+            ['title' => 'ml'],
+        ]);
     }
 
     private function insertRecipes()
@@ -90,7 +94,14 @@ Tout mettre ensemble dans une assiette et deguster',
 
     private function insertIngredients()
     {
-
+        DB::table('ingredients')->insert([
+            ['name' => 'Carrot'],
+            ['name' => 'Courgette'],
+            ['name' => 'Potato'],
+            ['name' => 'Lamb chop'],
+            ['name' => 'Chicken drumstick'],
+            ['name' => 'Large grain Couscous'],
+        ]);
     }
 
     private function attachTagsToRecipes()
@@ -109,5 +120,21 @@ Tout mettre ensemble dans une assiette et deguster',
         DB::table('categories')->delete();
         DB::table('recipes')->delete();
         DB::table('recipe_tag')->delete();
+        DB::table('units')->delete();
+        DB::table('ingredients')->delete();
+        DB::table('ingredient_recipe')->delete();
+    }
+
+    private function attachIngredientsToRecipes()
+    {
+        /** @var Recipe $couscous */
+        $couscous = Recipe::query()->where('title', 'Couscous')->first();
+        /** @var Unit $noUnit */
+        $noUnit = Unit::query()->where('title', 'none')->first();
+
+        $couscous->ingredients()->attach(
+            Ingredient::query()->where('name', 'Carrot')->pluck('id')->first(),
+            ['unit_id' => $noUnit->getId(), 'quantity' => 3]
+        );
     }
 }

@@ -59,7 +59,7 @@ class AddRecipesSchemas extends Migration
                 $table->unsignedInteger('ingredient_id');
                 $table->unsignedInteger('recipe_id');
                 $table->unsignedInteger('unit_id');
-                $table->integer('quantity');
+                $table->float('quantity');
 
                 $table->foreign('ingredient_id')->references('id')->on('ingredients')->onDelete('cascade');
                 $table->foreign('recipe_id')->references('id')->on('recipes')->onDelete('cascade');
